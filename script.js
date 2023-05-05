@@ -64,20 +64,29 @@ const getParamInputs = () => {
 //Get query inputs
 const getQueryInputs = () => {
   const values = {};
-  queryBoxes.forEach((box, index) => {
+  let lastKey = "";
+  const allQueryBoxes = queriesContainer.querySelectorAll(
+    ".keyValue-box input"
+  );
+  allQueryBoxes.forEach((box, index) => {
     const value = box.value.trim();
     if (value !== "") {
       if (index % 2 === 0) {
         const key = value;
-        const nextBox = queryBoxes[index + 1];
+        lastKey = key;
+        const nextBox = allQueryBoxes[index + 1];
         const nextValue = nextBox.value.trim();
         if (nextValue !== "") {
           values[key] = nextValue;
         }
+      } else {
+        // If the key already exists and the new value is not empty, overwrite the value
+        if (values[lastKey] !== undefined && value !== "") {
+          values[lastKey] = value;
+        }
       }
     }
   });
-  console.log(values);
   return values;
 };
 
